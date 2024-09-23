@@ -22,26 +22,20 @@ trait BuildGenericEmail
 
         if ($this->attachment ?? false) {
             $this->attach(
-                    $this->attachment->getPath(),
-                    [
-                            'as'   => $this->attachment->filename,
-                            'mime' => $this->attachment->mime_type,
-                    ]
+                $this->attachment->getPath(),
+                [
+                    'as' => $this->attachment->filename,
+                    'mime' => $this->attachment->mime_type,
+                ]
             );
         }
 
-        $data = [
-                'content'       => TokenHelper::replace($this->emailTemplate->content, $this),
-                'preHeaderText' => TokenHelper::replace($this->emailTemplate->preheader, $this),
-                'title'         => TokenHelper::replace($this->emailTemplate->title, $this),
-                'theme'         => $this->emailTemplate->theme->colours,
-                'logo'          => $this->emailTemplate->logo,
-        ];
+        $data = EmailTemplate::getEmailData($this->emailTemplate, $this);
 
         return $this->from($this->emailTemplate->from['email'], $this->emailTemplate->from['name'])
-                    ->view($this->emailTemplate->view_path)
-                    ->subject(TokenHelper::replace($this->emailTemplate->subject, $this))
-                    ->to($this->sendTo)
-                    ->with(['data' => $data]);
+            ->view($this->emailTemplate->view_path)
+            ->subject(TokenHelper::replace($this->emailTemplate->subject, $this))
+            ->to($this->sendTo)
+            ->with(['data' => $data]);
     }
 }

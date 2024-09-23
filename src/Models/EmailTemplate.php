@@ -81,21 +81,6 @@ class EmailTemplate extends Model
         $this->setTableFromConfig();
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        // When an email template is updated
-        static::updated(function ($template) {
-            self::clearEmailTemplateCache($template->key, $template->language);
-        });
-
-        // When an email template is deleted
-        static::deleted(function ($template) {
-            self::clearEmailTemplateCache($template->key, $template->language);
-        });
-    }
-
     public function setTableFromConfig()
     {
         $this->table = config('filament-email-templates.table_name');
@@ -114,18 +99,33 @@ class EmailTemplate extends Model
         });
     }
 
-    public static function clearEmailTemplateCache($key, $language)
-    {
-        $cacheKey = "email_by_key_{$key}_{$language}";
-        Cache::forget($cacheKey);
-    }
-
     /**
      * @return \Illuminate\Support\Collection
      */
     public static function getSendToSelectOptions()
     {
         return collect(config('emailTemplate.recipients'));
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // When an email template is updated
+        static::updated(function ($template) {
+            self::clearEmailTemplateCache($template->key, $template->language);
+        });
+
+        // When an email template is deleted
+        static::deleted(function ($template) {
+            self::clearEmailTemplateCache($template->key, $template->language);
+        });
+    }
+
+    public static function clearEmailTemplateCache($key, $language)
+    {
+        $cacheKey = "email_by_key_{$key}_{$language}";
+        Cache::forget($cacheKey);
     }
 
     /**
@@ -181,16 +181,7 @@ class EmailTemplate extends Model
     public function getEmailPreviewData()
     {
         $models = self::createEmailPreviewData();
-        return [
-            'user' => $models->user,
-            'content' => TokenHelper::replace($this->content ?? '', $models),
-            'subject' => TokenHelper::replace($this->subject ?? '', $models),
-            'preHeaderText' => TokenHelper::replace($this->preheader ?? '', $models),
-            'title' => TokenHelper::replace($this->title ?? '', $models),
-            'theme' => $this->theme->colours,
-            'logo' => $this->logo,
-            'language' => $this->language,
-        ];
+        return self::getEmailData($this, $models);
     }
 
     /**
@@ -210,6 +201,20 @@ class EmailTemplate extends Model
         $models->plainText = Str::random(32);
 
         return $models;
+    }
+
+    public static function getEmailData($template, $model)
+    {
+        return [
+            'user' => $model->user,
+            'content' => TokenHelper::replace($template->content ?? '', $model),
+            'subject' => TokenHelper::replace($template->subject ?? '', $model),
+            'preHeaderText' => TokenHelper::replace($template->preheader ?? '', $model),
+            'title' => TokenHelper::replace($template->title ?? '', $model),
+            'theme' => $template->theme->colours,
+            'logo' => $template->logo,
+            'language' => $template->language,
+        ];
     }
 
     /**
