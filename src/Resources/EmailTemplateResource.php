@@ -234,7 +234,7 @@ class EmailTemplateResource extends Resource
                             'vb-email-templates::forms.components.iframe',
                             ['record' => $record],
                         ))->form(null)
-                        ->modalHeading(fn(EmailTemplate $record): string => 'Preview Email: ' . $record->name)
+                        ->modalHeading(fn(EmailTemplate $record): string => __('Preview Email').': ' . $record->name)
                         ->modalSubmitAction(false)
                         ->modalCancelAction(false)
                         ->slideOver(),

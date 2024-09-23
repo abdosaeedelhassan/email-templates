@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html dir="{{$data['language']==='ar'?'rtl':'ltr'}}" style="direction: {{$data['language']==='ar'?'rtl':'ltr'}}">
+<head lang="{{$data['language']}}">
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">

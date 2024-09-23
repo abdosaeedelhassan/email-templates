@@ -181,7 +181,6 @@ class EmailTemplate extends Model
     public function getEmailPreviewData()
     {
         $models = self::createEmailPreviewData();
-
         return [
             'user' => $models->user,
             'content' => TokenHelper::replace($this->content ?? '', $models),
@@ -190,6 +189,7 @@ class EmailTemplate extends Model
             'title' => TokenHelper::replace($this->title ?? '', $models),
             'theme' => $this->theme->colours,
             'logo' => $this->logo,
+            'language' => $this->language,
         ];
     }
 

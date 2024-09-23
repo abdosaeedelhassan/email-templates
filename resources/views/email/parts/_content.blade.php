@@ -9,7 +9,7 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: {{config('filament-email-templates.content_width')}}px; margin-bottom: 30px" >
             <!-- COPY -->
             <tr>
-                <td bgcolor="{{$data['theme']["content_bg_color"]}}" align="left" style="padding: 20px 30px 40px 30px; color: {{$data['theme']["body_color"]}}; font-family: 'Lato',
+                <td bgcolor="{{$data['theme']["content_bg_color"]}}" align="{{$data['language']==='ar'?'right':'left'}}" style="padding: 20px 30px 40px 30px; color: {{$data['theme']["body_color"]}}; font-family: 'Lato',
                 Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 1.8;" >
 
                     {!! $data['content']??'' !!}

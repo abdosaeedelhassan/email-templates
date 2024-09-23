@@ -9,7 +9,7 @@
 				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: {{config('filament-email-templates.content_width')}}px;">
 					<!-- NAVIGATION -->
 					<tr>
-						<td bgcolor="{{$data['theme']["body_bg_color"]}}" align="left" style="padding: 30px; color: {{$data['theme']["body_color"]}}; border-radius: 4px 4px 4px 4px;
+						<td bgcolor="{{$data['theme']["body_bg_color"]}}" align="{{$data['language']==='ar'?'right':'left'}}" style="padding: 30px; color: {{$data['theme']["body_color"]}}; border-radius: 4px 4px 4px 4px;
 		                font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;">
 							<p style="margin: 0;">
 								@foreach(config('filament-email-templates.links') as $link)
@@ -26,7 +26,7 @@
 
 					<!-- ADDRESS -->
 					<tr>
-						<td bgcolor="{{$data['theme']["body_bg_color"]}}" align="left"
+						<td bgcolor="{{$data['theme']["body_bg_color"]}}" align="{{$data['language']==='ar'?'right':'left'}}"
 						    style="padding: 30px; color: {{$data['theme']["body_color"]}}; border-radius: 4px 4px 4px 4px; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px;
 						    font-weight: 400; line-height: 18px;">
 							<p style="margin: 0;"> &copy; <?= date('Y'); ?> {{config('app.name')}}. {{__('vb-email-templates::email-templates.general-labels.all-rights-reserved')}}.</p>
