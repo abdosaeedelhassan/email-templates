@@ -111,6 +111,7 @@ return [
 
     //These will be included in the language picker when editing an email template
     'languages' => [
+        'ar' => ['display' => 'العربية', 'flag-icon' => 'sa'],
         'en_GB' => ['display' => 'British', 'flag-icon' => 'gb'],
         'en_US' => ['display' => 'USA', 'flag-icon' => 'us'],
         'es' => ['display' => 'Español', 'flag-icon' => 'es'],
