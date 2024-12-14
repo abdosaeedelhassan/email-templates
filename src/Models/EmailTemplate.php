@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
@@ -81,7 +83,7 @@ class EmailTemplate extends Model
         $this->setTableFromConfig();
     }
 
-    public function setTableFromConfig()
+    public function setTableFromConfig(): void
     {
         $this->table = config('filament-email-templates.table_name');
     }
@@ -100,9 +102,9 @@ class EmailTemplate extends Model
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
-    public static function getSendToSelectOptions()
+    public static function getSendToSelectOptions(): Collection
     {
         return collect(config('emailTemplate.recipients'));
     }
@@ -131,7 +133,7 @@ class EmailTemplate extends Model
     /**
      * @return EmailTemplateFactory
      */
-    protected static function newFactory()
+    protected static function newFactory(): EmailTemplateFactory
     {
         return EmailTemplateFactory::new();
     }
@@ -147,9 +149,9 @@ class EmailTemplate extends Model
     /**
      * Get the assigned theme or the default
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function theme()
+    public function theme(): BelongsTo
     {
         return $this->belongsTo(EmailTemplateTheme::class, config('filament-email-templates.theme_table_name') . '_id')->withDefault(function ($model) {
             return EmailTemplateTheme::where('is_default', true)->first();
@@ -161,7 +163,7 @@ class EmailTemplate extends Model
      *
      * @return string
      */
-    public function getBase64EmailPreviewData()
+    public function getBase64EmailPreviewData(): string
     {
         /**
          * Iframes normally use src attribute to load content from a url
@@ -178,7 +180,7 @@ class EmailTemplate extends Model
     /**
      * @return array
      */
-    public function getEmailPreviewData()
+    public function getEmailPreviewData(): array
     {
         $models = self::createEmailPreviewData();
         return self::getEmailData($this, $models);
@@ -187,7 +189,7 @@ class EmailTemplate extends Model
     /**
      * @return object
      */
-    public static function createEmailPreviewData()
+    public static function createEmailPreviewData(): object
     {
         $models = (object)[];
 
@@ -203,7 +205,7 @@ class EmailTemplate extends Model
         return $models;
     }
 
-    public static function getEmailData($template, $model)
+    public static function getEmailData($template, $model): array
     {
         return [
             'user' => $model->user,
@@ -261,7 +263,7 @@ class EmailTemplate extends Model
      * @return string
      * @throws \Exception
      */
-    public function getMailableClass()
+    public function getMailableClass(): string
     {
         $className = Str::studly($this->key);
         $directory = str_replace('/', '\\', config('filament-email-templates.mailable_directory', 'Mail/Visualbuilder/EmailTemplates'));
